@@ -2,9 +2,11 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 import json
+import datetime
 #########################
 from django.contrib.auth import authenticate
 from rest_framework.views import APIView
+from django.db.models.query import EmptyQuerySet
 from rest_framework.response import Response
 from rest_framework import viewsets
 from rest_framework.decorators import api_view, permission_classes
@@ -15,7 +17,7 @@ from rest_framework.status import (
 )
 ########################
 from django.contrib.auth.models import User
-from .models import Employee, Module, Enrolement, Building, Venue, Timetable, ExamTimetable
+from .models import Employee, Module, Enrolement, Building, Venue, Timetable, ExamTimetable, BookedVenue
 from .serializers import EmployeeSerializer, ModuleSerializer, EnrolementSerializer, BuildingSerializer, VenueSerializer, TimetableSerializer, ExamTimetableSerializer
 
 
@@ -58,7 +60,7 @@ def viewTimetable(request):
 	num = request.data.get("studentNumber")
 	stud = User.objects.get(username = num)
 	enrolement = Enrolement.objects.filter(student = stud.pk)
-	lst = enrolement.values_list("moduleID", flat = True) 
+	lst = enrolement.values_list("module", flat = True) 
 	t = Timetable.objects.filter(moduleID__in = lst)
 	serializer = TimetableSerializer(t, many = True)
 	return Response(serializer.data)
@@ -86,8 +88,28 @@ def navigate(request):
 
 @api_view(["POST"])
 def bookVenue(request):
+	period = request.data.get("period")
+	date = request.data.get("date")
+	date = datetime.datetime(date)
+	studentID = request.data.get("id")
+	venue = request.data.get("venue")
+	p = request.data.get("period")
 
-	return
+	v = Venue.objects.get(pk = venue)
+	stud = User.objects.get(pk = studentID)
+
+	bv = BookedVenue.objects.filter(period = period, date = date)
+	bv1 = Timetable.objects.filter(period = period, date= date.day)
+
+	if(len(bv) == 0 and len(bv1 == 0)):
+		venue = BookedVenue(student = stud, venue = v,    date = datetime.date.today , period = p )
+		venue.save()
+		return Response({'message': 'Booked'},
+                        status=HTTP_200_OK)
+	else:
+		return Response({'error': 'already booked'},
+                        status=HTTP_400_BAD_REQUEST)
+	
 
 
 @api_view(["POST"])

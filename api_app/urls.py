@@ -26,4 +26,5 @@ urlpatterns = [
     url(r'^navigate',views.navigate,name="navigate"),
     url(r'^moduleName',views.moduleName,name="moduleName"),
     url(r'^venueName',views.venueName,name="venueName"),
+    url(r'^bookVenue',views.bookVenue,name="bookVenue"),
 ]
