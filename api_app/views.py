@@ -21,6 +21,7 @@ from .models import Employee, Module, Enrolement, Building, Venue, Timetable, Ex
 from .serializers import EmployeeSerializer, ModuleSerializer, EnrolementSerializer, BuildingSerializer, VenueSerializer, TimetableSerializer, ExamTimetableSerializer
 
 
+
 def index_api_response(request):
 	responseData = {
     	'Error':'Endpoint not found:Append Endpoint' ,
@@ -51,7 +52,7 @@ def login(request):
     if not user:
         return Response({'error': 'Invalid Credentials'},
                         status=HTTP_404_NOT_FOUND)
-    return Response({'response: true '},
+    return Response({'response': ' true '},
                     status=HTTP_200_OK)
 
 

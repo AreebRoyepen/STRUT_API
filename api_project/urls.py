@@ -22,4 +22,4 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     #url(r'^employees/',views.EmployeeListView.as_view()),
     url(r'^api/', include('api_app.urls')),
-]
+    ]
