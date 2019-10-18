@@ -73,16 +73,25 @@ def navigate(request):
 	frm = request.data.get("from")
 
 	v1 = Venue.objects.filter(venueName = frm).values_list()
-	b1 = Building.objects.get(pk = v1[0][2])
+	if (len(v1) == 0):
+		b1 = frm
+	else:
+		b1 = Building.objects.get(pk = v1[0][2])
+		b1 = b1.buildingName
 
 	v2 = Venue.objects.filter(venueName = to).values_list()
-	b2 = Building.objects.get(pk = v2[0][2])
 
-	if (v1 is None or v2 is None or b1 is None or b2 is None):
+	if (len(v2) == 0):
+		b2 = to
+	else:
+		b2 = Building.objects.get(pk = v2[0][2])
+		b2 = b2.buildingName
+
+	if (b1 is None or b2 is None):
 		return Response({'error': 'Invalid building or venue'},
                         status=HTTP_404_NOT_FOUND)
 
-	return Response({'from:' + b1.buildingName + ', to :' + b2.buildingName},
+	return Response({'from' :  b1 ,' to ' : b2},
                     status=HTTP_200_OK)
 
 
@@ -134,3 +143,14 @@ def venueName(request):
                         status=HTTP_404_NOT_FOUND)
 	return Response(VenueSerializer(v, many = True).data)
 
+
+@api_view(["POST"])
+def isVenue(request):
+	id = request.data.get("name")
+	v = Venue.objects.filter(venueName = id)
+
+	if (len(v) == 0):
+		return Response({'response': 'false'},
+                        status=HTTP_404_NOT_FOUND)
+	return Response({'response': 'true'},
+                        status=HTTP_200_OK)
