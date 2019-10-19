@@ -28,9 +28,12 @@ class VenueSerializer(serializers.ModelSerializer):
 		fields='__all__'
 
 class TimetableSerializer(serializers.ModelSerializer):
+	venue = serializers.StringRelatedField(source='venueID', read_only=False)
+	module = serializers.StringRelatedField(source='moduleID', read_only=False)
+
 	class Meta:
 		model=Timetable
-		fields='__all__'
+		fields= ('id', 'period', 'day', 'module', 'venue')
 
 class ExamTimetableSerializer(serializers.ModelSerializer):
 	class Meta:

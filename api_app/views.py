@@ -74,25 +74,26 @@ def navigate(request):
 
 	v1 = Venue.objects.filter(venueName = frm).values_list()
 	if (len(v1) == 0):
-		b1 = frm
+		b1 = Building.objects.get(buildingName = frm)
 	else:
 		b1 = Building.objects.get(pk = v1[0][2])
-		b1 = b1.buildingName
+		#b1 = b1.buildingName
 
 	v2 = Venue.objects.filter(venueName = to).values_list()
 
 	if (len(v2) == 0):
-		b2 = to
+		b2 = Building.objects.get(buildingName = to)
 	else:
 		b2 = Building.objects.get(pk = v2[0][2])
-		b2 = b2.buildingName
+		#b2 = b2.buildingName
 
 	if (b1 is None or b2 is None):
 		return Response({'error': 'Invalid building or venue'},
                         status=HTTP_404_NOT_FOUND)
 
-	return Response({'from' :  b1 ,' to ' : b2},
-                    status=HTTP_200_OK)
+	serializer1 = BuildingSerializer(b1 | b2, many = False)
+
+	return Response(serializer1.data)
 
 
 
@@ -154,3 +155,12 @@ def isVenue(request):
                         status=HTTP_404_NOT_FOUND)
 	return Response({'response': 'true'},
                         status=HTTP_200_OK)
+
+
+@api_view(["POST"])
+def viewModules(request):
+	num = request.data.get("studentNumber")
+	stud = User.objects.get(username = num)
+	enrolement = Enrolement.objects.filter(student = stud.pk)
+	serializer = EnrolementSerializer(enrolement, many = True)
+	return Response(serializer.data)

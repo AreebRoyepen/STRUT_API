@@ -26,17 +26,11 @@
 					]
 				},
 				"url": {
-					"raw": "http://127.0.0.1:8000/api/login",
-					"protocol": "http",
+					"raw": "{{url}}/login",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"{{url}}"
 					],
-					"port": "8000",
 					"path": [
-						"api",
 						"login"
 					]
 				}
@@ -59,17 +53,11 @@
 					]
 				},
 				"url": {
-					"raw": "http://127.0.0.1:8000/api/viewTimetable",
-					"protocol": "http",
+					"raw": "{{url}}/viewTimetable",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"{{url}}"
 					],
-					"port": "8000",
 					"path": [
-						"api",
 						"viewTimetable"
 					]
 				}
@@ -86,28 +74,22 @@
 					"formdata": [
 						{
 							"key": "from",
-							"value": "A1",
+							"value": "Sunlab",
 							"type": "text"
 						},
 						{
 							"key": "to",
-							"value": "B1",
+							"value": "B Block",
 							"type": "text"
 						}
 					]
 				},
 				"url": {
-					"raw": "http://127.0.0.1:8000/api/navigate",
-					"protocol": "http",
+					"raw": "{{url}}/navigate",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"{{url}}"
 					],
-					"port": "8000",
 					"path": [
-						"api",
 						"navigate"
 					]
 				}
@@ -130,17 +112,11 @@
 					]
 				},
 				"url": {
-					"raw": "http://127.0.0.1:8000/api/moduleName",
-					"protocol": "http",
+					"raw": "{{url}}/moduleName",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"{{url}}"
 					],
-					"port": "8000",
 					"path": [
-						"api",
 						"moduleName"
 					]
 				}
@@ -157,24 +133,45 @@
 					"formdata": [
 						{
 							"key": "id",
-							"value": "9",
+							"value": "1",
 							"type": "text"
 						}
 					]
 				},
 				"url": {
-					"raw": "http://127.0.0.1:8000/api/venueName",
-					"protocol": "http",
+					"raw": "{{url}}/venueName",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"{{url}}"
 					],
-					"port": "8000",
 					"path": [
-						"api",
 						"venueName"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "isVenue",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "A1",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/isVenue",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"isVenue"
 					]
 				}
 			},

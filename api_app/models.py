@@ -34,6 +34,8 @@ class Enrolement(models.Model):
 class Building(models.Model):
     buildingName = models.CharField(max_length = 100)
     buildingPlan = models.ImageField()
+    x = models.CharField(max_length = 255)
+    y = models.CharField(max_length = 255)
 
     def __str__(self):
         return self.buildingName
