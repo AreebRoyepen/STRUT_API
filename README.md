@@ -1,3 +1,2 @@
-# STRUT
-A mobile application for navigation through UWC.
-and much more
+# STRUT - api
+an api for STRUT database interactions
