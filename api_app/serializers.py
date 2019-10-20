@@ -13,9 +13,11 @@ class EmployeeSerializer(serializers.ModelSerializer):
 		fields='__all__'
 
 class EnrolementSerializer(serializers.ModelSerializer):
+	modulename = serializers.StringRelatedField(source='module', read_only=False)
+
 	class Meta:
 		model=Enrolement
-		fields='__all__'
+		fields=('modulename' , 'year')
 
 class BuildingSerializer(serializers.ModelSerializer):
 	class Meta:

@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 import json
-import datetime
+from datetime import datetime
 #########################
 from django.contrib.auth import authenticate
 from rest_framework.views import APIView
@@ -102,25 +102,28 @@ def navigate(request):
 @api_view(["POST"])
 def bookVenue(request):
 	period = request.data.get("period")
-	date = request.data.get("date")
-	date = datetime.datetime(date)
+	d = request.data.get("date")
+	d = str(d)
+	print(int(d[6:10]),int(d[3:5]),int(d[0:2]))
+	d = datetime(int(d[6:10]),int(d[3:5]),int(d[0:2]))
 	studentID = request.data.get("id")
 	venue = request.data.get("venue")
 	p = request.data.get("period")
 
-	v = Venue.objects.get(pk = venue)
-	stud = User.objects.get(pk = studentID)
+	v = Venue.objects.filter(venueName = venue)
+	v = v[0].pk
+	stud = User.objects.get(username = studentID)
 
-	bv = BookedVenue.objects.filter(period = period, date = date)
-	bv1 = Timetable.objects.filter(period = period, date= date.day)
+	bv = BookedVenue.objects.filter(period = period, date = d, venue  = v)
+	bv1 = Timetable.objects.filter(period = period, day= d.weekday()+ 1, venueID = v)
 
-	if(len(bv) == 0 and len(bv1 == 0)):
-		venue = BookedVenue(student = stud, venue = v,    date = datetime.date.today , period = p )
+	if(len(bv) == 0 and len(bv1) == 0):
+		venue = BookedVenue(student = studentID, venueID = v,    date = d , period = p )
 		venue.save()
-		return Response({'message': 'Booked'},
+		return Response({'message': 'success'},
                         status=HTTP_200_OK)
 	else:
-		return Response({'error': 'already booked'},
+		return Response({'message': 'already booked'},
                         status=HTTP_400_BAD_REQUEST)
 	
 

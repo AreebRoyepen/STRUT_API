@@ -27,6 +27,7 @@ class Module (models.Model):
 class Enrolement(models.Model):
     student = models.ForeignKey(User,on_delete = models.CASCADE)    
     module = models.ForeignKey(Module,on_delete = models.CASCADE)
+    year = models.CharField(max_length =5)
     def __str__(self):
         return self.module.get()
 
