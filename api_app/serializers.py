@@ -1,16 +1,11 @@
 from rest_framework import serializers
-from .models import Employee, Module, Enrolement, Building, Venue, Timetable, ExamTimetable
+from .models import Module, Enrolement, Building, Venue, Timetable, ExamTimetable
 
 class ModuleSerializer(serializers.ModelSerializer):
 	class Meta:
 		model=Module
 		fields='__all__'
 
-
-class EmployeeSerializer(serializers.ModelSerializer):
-	class Meta:
-		model=Employee
-		fields='__all__'
 
 class EnrolementSerializer(serializers.ModelSerializer):
 	modulename = serializers.StringRelatedField(source='module', read_only=False)

@@ -20,7 +20,6 @@ from . import views
 
 urlpatterns = [
     url(r'^$',views.index_api_response,name="index_api_response"),
-    url(r'^employees',views.EmployeeListView.as_view()),
     url(r'^login',views.login,name="login"),
     url(r'^viewTimetable',views.viewTimetable,name="viewTimetable"),
     url(r'^navigate',views.navigate,name="navigate"),

@@ -1,16 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-# Create your models here.
-class Employee(models.Model):
-    name=models.TextField()
-    jobtitle=models.TextField()
-    def __str__(self):
-        return self.jobtitle
-
-
-########################################
-
 '''
 the models representation of the DB, 
 UML diagram in the documentation

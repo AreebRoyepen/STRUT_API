@@ -1,12 +1,11 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
-import json
-from datetime import datetime
-#########################
 from django.contrib.auth import authenticate
-from rest_framework.views import APIView
+from django.contrib.auth.models import User
 from django.db.models.query import EmptyQuerySet
+
+from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import viewsets
 from rest_framework.decorators import api_view, permission_classes
@@ -15,10 +14,11 @@ from rest_framework.status import (
     HTTP_404_NOT_FOUND,
     HTTP_200_OK
 )
-########################
-from django.contrib.auth.models import User
-from .models import Employee, Module, Enrolement, Building, Venue, Timetable, ExamTimetable, BookedVenue
-from .serializers import EmployeeSerializer, ModuleSerializer, EnrolementSerializer, BuildingSerializer, VenueSerializer, TimetableSerializer, ExamTimetableSerializer
+import json
+from datetime import datetime
+
+from .models import Module, Enrolement, Building, Venue, Timetable, ExamTimetable, BookedVenue
+from .serializers import ModuleSerializer, EnrolementSerializer, BuildingSerializer, VenueSerializer, TimetableSerializer, ExamTimetableSerializer
 
 
 
@@ -28,17 +28,6 @@ def index_api_response(request):
 	}
 	return HttpResponse(json.dumps(responseData), content_type="application/json")
 
-
-class EmployeeListView(APIView):
-
-	def get(self,request):
-		employees=Employee.objects.all()
-		serializer=EmployeeSerializer(employees,many=True)
-		return Response(serializer.data)
-	def post(self,request):
-		pass
-
-##########################################################################
 
 @api_view(["POST"])
 def login(request):
@@ -77,7 +66,6 @@ def navigate(request):
 		b1 = Building.objects.get(buildingName = frm)
 	else:
 		b1 = Building.objects.get(pk = v1[0][2])
-		#b1 = b1.buildingName
 
 	v2 = Venue.objects.filter(venueName = to).values_list()
 
@@ -85,7 +73,6 @@ def navigate(request):
 		b2 = Building.objects.get(buildingName = to)
 	else:
 		b2 = Building.objects.get(pk = v2[0][2])
-		#b2 = b2.buildingName
 
 	if (b1 is None or b2 is None):
 		return Response({'error': 'Invalid building or venue'},
@@ -103,12 +90,12 @@ def navigate(request):
 def bookVenue(request):
 	period = request.data.get("period")
 	d = request.data.get("date")
-	d = str(d)
-	print(int(d[6:10]),int(d[3:5]),int(d[0:2]))
-	d = datetime(int(d[6:10]),int(d[3:5]),int(d[0:2]))
 	studentID = request.data.get("id")
 	venue = request.data.get("venue")
 	p = request.data.get("period")
+
+	d = str(d)
+	d = datetime(int(d[6:10]),int(d[3:5]),int(d[0:2]))
 
 	v = Venue.objects.filter(venueName = venue)
 	v = v[0].pk
@@ -133,7 +120,7 @@ def moduleName(request):
 	id = request.data.get("id")
 	m = Module.objects.filter(pk = id)
 
-	if (m is None):
+	if (len(m) == 0):
 		return Response({'error': 'Invalid module'},
                         status=HTTP_404_NOT_FOUND)
 	return Response(ModuleSerializer(m,many = True).data)
@@ -144,7 +131,7 @@ def venueName(request):
 	id = request.data.get("id")
 	v = Venue.objects.filter(pk = id)
 
-	if (v is None):
+	if (len(v)==0):
 		return Response({'error': 'Invalid venue'},
                         status=HTTP_404_NOT_FOUND)
 	return Response(VenueSerializer(v, many = True).data)
