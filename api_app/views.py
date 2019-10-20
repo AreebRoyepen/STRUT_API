@@ -91,9 +91,11 @@ def navigate(request):
 		return Response({'error': 'Invalid building or venue'},
                         status=HTTP_404_NOT_FOUND)
 
-	serializer1 = BuildingSerializer(b1 | b2, many = False)
+	serializer1 = BuildingSerializer(b1, many = False)
+	serializer2 = BuildingSerializer(b2, many = False)
 
-	return Response(serializer1.data)
+	return Response({'from':serializer1.data, 'to' : serializer2.data},
+                        status=HTTP_200_OK)
 
 
 
