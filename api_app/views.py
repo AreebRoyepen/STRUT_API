@@ -156,3 +156,13 @@ def viewModules(request):
 	enrolement = Enrolement.objects.filter(student = stud.pk)
 	serializer = EnrolementSerializer(enrolement, many = True)
 	return Response(serializer.data)
+
+@api_view(["POST"])
+def viewExamTimetable(request):
+	num = request.data.get("studentNumber")
+	stud = User.objects.get(username = num)
+	enrolement = Enrolement.objects.filter(student = stud.pk)
+	lst = enrolement.values_list("module", flat = True) 
+	t = ExamTimetable.objects.filter(moduleID__in = lst)
+	serializer = ExamTimetableSerializer(t, many = True)
+	return Response(serializer.data)

@@ -27,7 +27,8 @@ urlpatterns = [
     url(r'^venueName',views.venueName,name="venueName"),
     url(r'^bookVenue',views.bookVenue,name="bookVenue"),
     url(r'^isVenue',views.isVenue,name="isVenue"),
-    url(r'^viewModules',views.viewModules,name="viewModules")
+    url(r'^viewModules',views.viewModules,name="viewModules"),
+    url(r'^viewExamTimetable',views.viewExamTimetable,name="viewExamTimetable")
 ]
 
 
