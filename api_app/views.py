@@ -18,7 +18,7 @@ import json
 from datetime import datetime
 
 from .models import Module, Enrolement, Building, Venue, Timetable, ExamTimetable, BookedVenue
-from .serializers import ModuleSerializer, EnrolementSerializer, BuildingSerializer, VenueSerializer, TimetableSerializer, ExamTimetableSerializer
+from .serializers import UserSerializer, ModuleSerializer, EnrolementSerializer, BuildingSerializer, VenueSerializer, TimetableSerializer, ExamTimetableSerializer
 
 
 
@@ -150,12 +150,17 @@ def isVenue(request):
 
 
 @api_view(["POST"])
-def viewModules(request):
+def studentDetails(request):
 	num = request.data.get("studentNumber")
 	stud = User.objects.get(username = num)
+
+	serializer1 = UserSerializer(stud, many = False)
+
 	enrolement = Enrolement.objects.filter(student = stud.pk)
-	serializer = EnrolementSerializer(enrolement, many = True)
-	return Response(serializer.data)
+	serializer2 = EnrolementSerializer(enrolement, many = True)
+	return Response({'user':serializer1.data, 'modules' : serializer2.data},
+                        status=HTTP_200_OK)
+
 
 @api_view(["POST"])
 def viewExamTimetable(request):
