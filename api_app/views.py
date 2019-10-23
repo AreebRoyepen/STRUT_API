@@ -71,7 +71,9 @@ def navigate(request):
 
 	if (len(v2) == 0):
 		b2 = Building.objects.get(buildingName = to)
+		flag  = False
 	else:
+		flag = True
 		b2 = Building.objects.get(pk = v2[0][2])
 
 	if (b1 is None or b2 is None):
@@ -81,7 +83,13 @@ def navigate(request):
 	serializer1 = BuildingSerializer(b1, many = False)
 	serializer2 = BuildingSerializer(b2, many = False)
 
-	return Response({'from':serializer1.data, 'to' : serializer2.data},
+	if not flag:
+		return Response({'from':serializer1.data, 'to' : serializer2.data},
+                        status=HTTP_200_OK)
+	else:
+		v2 = Venue.objects.get(venueName = to)
+		serializer3 = VenueSerializer(v2, many = False)
+		return Response({'from':serializer1.data, 'to' : serializer2.data, 'venue' : serializer3.data},
                         status=HTTP_200_OK)
 
 
