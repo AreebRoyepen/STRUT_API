@@ -36,6 +36,8 @@ class Building(models.Model):
 class Venue(models.Model):
     venueName = models.CharField(max_length = 100)
     buildingID = models.ForeignKey(Building,on_delete = models.CASCADE)
+    venuePath = models.TextField()
+
 
     def get(self):
         return self.venueName
