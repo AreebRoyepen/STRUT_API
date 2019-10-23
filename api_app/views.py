@@ -130,7 +130,7 @@ def bookVenue(request):
 	p = request.data.get("period")
 
 	d = str(d)
-	d = datetime(int(d[6:10]),int(d[3:5]),int(d[0:2]))
+	d = datetime(int(d[0:4]),int(d[5:7]),int(d[8:10]))
 
 	v = Venue.objects.filter(venueName = venue)
 	v = v[0]
