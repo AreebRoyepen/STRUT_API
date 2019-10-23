@@ -95,6 +95,33 @@ def navigate(request):
 
 
 @api_view(["POST"])
+def checkVenue(request):
+	period = request.data.get("period")
+	d = request.data.get("date")
+	studentID = request.data.get("id")
+	venue = request.data.get("venue")
+	p = request.data.get("period")
+
+	d = str(d)
+	d = datetime(int(d[6:10]),int(d[3:5]),int(d[0:2]))
+
+	v = Venue.objects.filter(venueName = venue)
+	v = v[0]
+	stud = User.objects.get(username = studentID)
+
+	bv = BookedVenue.objects.filter(period = period, date = d, venue  = v)
+	bv1 = Timetable.objects.filter(period = period, day= d.weekday()+ 1, venueID = v)
+
+	if(len(bv) == 0 and len(bv1) == 0):
+		venue.save()
+		return Response({'message': 'success'},
+                        status=HTTP_200_OK)
+	else:
+		return Response({'message': 'already booked'},
+                        status=HTTP_400_BAD_REQUEST)
+
+
+@api_view(["POST"])
 def bookVenue(request):
 	period = request.data.get("period")
 	d = request.data.get("date")

@@ -26,6 +26,7 @@ urlpatterns = [
     url(r'^moduleName',views.moduleName,name="moduleName"),
     url(r'^venueName',views.venueName,name="venueName"),
     url(r'^bookVenue',views.bookVenue,name="bookVenue"),
+    url(r'^checkVenue',views.checkVenue,name="checkVenue"),
     url(r'^isVenue',views.isVenue,name="isVenue"),
     url(r'^studentDetails',views.studentDetails,name="studentDetails"),
     url(r'^viewExamTimetable',views.viewExamTimetable,name="viewExamTimetable")
