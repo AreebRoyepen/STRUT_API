@@ -98,14 +98,14 @@ def bookVenue(request):
 	d = datetime(int(d[6:10]),int(d[3:5]),int(d[0:2]))
 
 	v = Venue.objects.filter(venueName = venue)
-	v = v[0].pk
+	v = v[0]
 	stud = User.objects.get(username = studentID)
 
 	bv = BookedVenue.objects.filter(period = period, date = d, venue  = v)
 	bv1 = Timetable.objects.filter(period = period, day= d.weekday()+ 1, venueID = v)
 
 	if(len(bv) == 0 and len(bv1) == 0):
-		venue = BookedVenue(student = studentID, venueID = v,    date = d , period = p )
+		venue = BookedVenue(student = stud, venue = v,    date = d , period = p )
 		venue.save()
 		return Response({'message': 'success'},
                         status=HTTP_200_OK)
