@@ -84,7 +84,7 @@ def navigate(request):
 	serializer2 = BuildingSerializer(b2, many = False)
 
 	if not flag:
-		return Response({'from':serializer1.data, 'to' : serializer2.data},
+		return Response({'from':serializer1.data, 'to' : serializer2.data, 'venue' : False},
                         status=HTTP_200_OK)
 	else:
 		v2 = Venue.objects.get(venueName = to)
@@ -103,7 +103,8 @@ def checkVenue(request):
 	p = request.data.get("period")
 
 	d = str(d)
-	d = datetime(int(d[6:10]),int(d[3:5]),int(d[0:2]))
+	print(int(d[0:4]),int(d[5:7]),int(d[8:10]))
+	d = datetime(int(d[0:4]),int(d[5:7]),int(d[8:10]))
 
 	v = Venue.objects.filter(venueName = venue)
 	v = v[0]
@@ -113,12 +114,11 @@ def checkVenue(request):
 	bv1 = Timetable.objects.filter(period = period, day= d.weekday()+ 1, venueID = v)
 
 	if(len(bv) == 0 and len(bv1) == 0):
-		venue.save()
 		return Response({'message': 'success'},
                         status=HTTP_200_OK)
 	else:
 		return Response({'message': 'already booked'},
-                        status=HTTP_400_BAD_REQUEST)
+                        status=HTTP_200_OK)
 
 
 @api_view(["POST"])
